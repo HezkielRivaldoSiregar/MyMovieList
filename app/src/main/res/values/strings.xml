@@ -12,4 +12,5 @@
     <string name="season">Season:</string>
     <string name="overview">Overview</string>
     <string name="cast">Cast</string>
+    <string name="film_poster">Film Poster</string>
 </resources>

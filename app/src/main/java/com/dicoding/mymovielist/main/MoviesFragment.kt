@@ -29,7 +29,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_shows) {
 
             val moviesAdapter = ListMoviesAdapter()
             moviesAdapter.setMovies(movies)
-            if(movies.size > 0) showLoading(false)
+            if(movies.isNotEmpty()) showLoading(false)
 
             with(fragmentMoviesBinding.rvShowsMovies) {
                 layoutManager = LinearLayoutManager(context)
