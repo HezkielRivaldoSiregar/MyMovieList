@@ -13,4 +13,8 @@
     <string name="overview">Overview</string>
     <string name="cast">Cast</string>
     <string name="film_poster">Film Poster</string>
+    <string name="share">Share</string>
+    <string name="postertvshows">PosterTvShows</string>
+    <string name="title">Title</string>
+    <string name="trailer">Trailer</string>
 </resources>

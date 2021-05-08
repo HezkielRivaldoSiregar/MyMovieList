@@ -10,18 +10,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/itemImage"
             android:layout_width="141dp"
-            android:layout_height="209dp"/>
+            android:src="@drawable/movie_logo"
+            android:layout_height="209dp"
+            android:contentDescription="@string/postertvshows" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             android:orientation="vertical">
 
             <TextView
@@ -30,8 +32,9 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textAlignment="center"
+                android:textColor="@color/black"
                 android:textSize="20sp"
-                android:text="Title"/>
+                android:text="@string/title"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -42,12 +45,14 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:text="@string/creator"/>
                 <TextView
                     android:id="@+id/tvCreator"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="creator"/>
+                    android:textColor="@color/black"
+                    android:text="@string/creator"/>
             </LinearLayout>
 
             <LinearLayout
@@ -59,12 +64,14 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:text="@string/rating"/>
                 <TextView
                     android:id="@+id/tvRating"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="rating"/>
+                    android:textColor="@color/black"
+                    android:text="@string/rating"/>
             </LinearLayout>
 
             <LinearLayout
@@ -76,12 +83,14 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:text="@string/released"/>
                 <TextView
                     android:id="@+id/tvReleaseDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="released"/>
+                    android:textColor="@color/black"
+                    android:text="@string/released"/>
             </LinearLayout>
 
             <LinearLayout
@@ -93,12 +102,14 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:text="@string/status"/>
                 <TextView
                     android:id="@+id/tvStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="status"/>
+                    android:textColor="@color/black"
+                    android:text="@string/status"/>
             </LinearLayout>
 
             <LinearLayout
@@ -110,12 +121,14 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:text="@string/duration"/>
                 <TextView
                     android:id="@+id/tvDuration"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="duration"/>
+                    android:textColor="@color/black"
+                    android:text="@string/duration"/>
             </LinearLayout>
 
             <LinearLayout
@@ -127,12 +140,14 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:text="@string/season"/>
                 <TextView
                     android:id="@+id/tvSeasons"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Season"/>
+                    android:textColor="@color/black"
+                    android:text="@string/season"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -143,7 +158,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
         android:orientation="vertical">
 
         <TextView
@@ -151,18 +166,21 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="20sp"
+            android:textColor="@color/black"
             android:text="@string/genre"/>
 
         <TextView
             android:id="@+id/tvGenre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="genre"/>
+            android:textColor="@color/black"
+            />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Overview"
+            android:text="@string/overview"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="20sp"
             android:layout_marginTop="10dp"/>
@@ -172,7 +190,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Overview"/>
+            android:textColor="@color/black"
+            android:text="@string/overview"/>
 
     </LinearLayout>
 

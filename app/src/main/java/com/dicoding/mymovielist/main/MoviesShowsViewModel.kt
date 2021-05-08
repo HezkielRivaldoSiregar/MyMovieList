@@ -1,14 +1,15 @@
 package com.dicoding.mymovielist.main
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.dicoding.mymovielist.data.Movies
-import com.dicoding.mymovielist.data.MoviesTvShowsData
-import com.dicoding.mymovielist.data.TvShows
+import com.dicoding.mymovielist.data.MovieShowsRepository
+import com.dicoding.mymovielist.data.local.Movies
+import com.dicoding.mymovielist.data.local.TvShows
 
 
-class MoviesShowsViewModel: ViewModel() {
+class MoviesShowsViewModel (private val movieShowsRepository: MovieShowsRepository) : ViewModel() {
 
-    fun getMoviesData(): List<Movies> = MoviesTvShowsData.generateMoviesData()
+    fun getMoviesData(): LiveData<List<Movies>> = movieShowsRepository.getAllMovies()
+    fun getTvShowsData(): LiveData<List<TvShows>> = movieShowsRepository.getAllShows()
 
-    fun getTvShowsData(): List<TvShows> = MoviesTvShowsData.generateTvShowsData()
 }

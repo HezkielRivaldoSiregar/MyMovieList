@@ -1,11 +1,7 @@
-package com.dicoding.mymovielist.data
+package com.dicoding.mymovielist.data.local
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
-
-@Parcelize
 data class TvShows (
-    var image : Int,
+    var image : String,
     var title : String,
     var overview: String,
     var creator: String,
@@ -15,4 +11,4 @@ data class TvShows (
     var genre: String,
     val status: String,
     val duration: String
-):Parcelable
+)

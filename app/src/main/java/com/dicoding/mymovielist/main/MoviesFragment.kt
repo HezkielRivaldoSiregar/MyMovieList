@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.mymovielist.adapter.ListMoviesAdapter
 import com.dicoding.mymovielist.R
+import com.dicoding.mymovielist.ViewModelFactory
 import com.dicoding.mymovielist.databinding.FragmentMoviesShowsBinding
 
 class MoviesFragment : Fragment(R.layout.fragment_movies_shows) {
@@ -24,12 +25,16 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_shows) {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
-            val viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[MoviesShowsViewModel::class.java]
-            val movies = viewModel.getMoviesData()
-
+            val factory = ViewModelFactory.getInstance(requireActivity())
+            val viewModel = ViewModelProvider(this, factory)[MoviesShowsViewModel::class.java]
             val moviesAdapter = ListMoviesAdapter()
-            moviesAdapter.setMovies(movies)
-            if(movies.isNotEmpty()) showLoading(false)
+
+            showLoading(true)
+            viewModel.getMoviesData().observe(viewLifecycleOwner, { movies ->
+                showLoading(false)
+                moviesAdapter.setMovies(movies)
+                moviesAdapter.notifyDataSetChanged()
+            })
 
             with(fragmentMoviesBinding.rvShowsMovies) {
                 layoutManager = LinearLayoutManager(context)

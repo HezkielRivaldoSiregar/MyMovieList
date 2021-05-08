@@ -7,8 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dicoding.mymovielist.adapter.ListTvShowsAdapter
 import com.dicoding.mymovielist.R
+import com.dicoding.mymovielist.ViewModelFactory
+import com.dicoding.mymovielist.adapter.ListTvShowsAdapter
 import com.dicoding.mymovielist.databinding.FragmentMoviesShowsBinding
 
 class ShowsFragment : Fragment(R.layout.fragment_movies_shows) {
@@ -24,18 +25,21 @@ class ShowsFragment : Fragment(R.layout.fragment_movies_shows) {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
-            val viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[MoviesShowsViewModel::class.java]
-            val tvShows = viewModel.getTvShowsData()
+            val factory = ViewModelFactory.getInstance(requireActivity())
+            val viewModel = ViewModelProvider(this, factory)[MoviesShowsViewModel::class.java]
+            val showsAdapter = ListTvShowsAdapter()
 
-            val moviesAdapter = ListTvShowsAdapter()
-            moviesAdapter.setTvShows(tvShows)
-
-            if(tvShows.size > 0) showLoading(false)
+            showLoading(true)
+            viewModel.getTvShowsData().observe(viewLifecycleOwner, { shows ->
+                showLoading(false)
+                showsAdapter.setTvShows(shows)
+                showsAdapter.notifyDataSetChanged()
+            })
 
             with(fragmentTvShowsBinding.rvShowsMovies) {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
-                adapter = moviesAdapter
+                adapter = showsAdapter
             }
         }
     }
