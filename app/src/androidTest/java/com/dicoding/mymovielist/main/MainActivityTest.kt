@@ -1,15 +1,19 @@
 package com.dicoding.mymovielist.main
 
 import androidx.recyclerview.widget.RecyclerView
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.dicoding.mymovielist.R
-import com.dicoding.mymovielist.data.MoviesTvShowsData
+import com.dicoding.mymovielist.data.EspressoIdlingResources
+import com.dicoding.mymovielist.data.local.MoviesTvShowsData
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -19,6 +23,17 @@ class MainActivityTest{
 
     @get:Rule
     var activityRule = ActivityScenarioRule(MainActivity::class.java)
+
+    @Before
+    fun setUp() {
+        ActivityScenario.launch(MainActivity::class.java)
+        IdlingRegistry.getInstance().register(EspressoIdlingResources.idlingResource)
+    }
+
+    @After
+    fun tearDown() {
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResources.idlingResource)
+    }
 
     @Test
     fun loadMovies(){
@@ -55,6 +70,7 @@ class MainActivityTest{
         onView((withId(R.id.tvStatus))).check(matches(withText(movieData[0].status)))
         onView((withId(R.id.tvDuration))).check(matches(isDisplayed()))
         onView((withId(R.id.tvDuration))).check(matches(withText(movieData[0].duration)))
+        onView((withId(R.id.share))).perform(click())
     }
 
     @Test
@@ -80,8 +96,7 @@ class MainActivityTest{
         onView((withId(R.id.tvStatus))).check(matches(withText(showsData[0].status)))
         onView((withId(R.id.tvDuration))).check(matches(isDisplayed()))
         onView((withId(R.id.tvDuration))).check(matches(withText(showsData[0].duration)))
+        onView((withId(R.id.share))).perform(click())
     }
-
-
 
 }
