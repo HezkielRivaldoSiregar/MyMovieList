@@ -2,14 +2,9 @@
     <string name="app_name">MyMovieList</string>
     <string name="movies">Movies</string>
     <string name="tvShows">Tv Shows</string>
-    <string name="director">Director:</string>
-    <string name="rating">Rating:</string>
-    <string name="released">Released:</string>
+    <string name="released">Release Date</string>
     <string name="genre">Genre</string>
-    <string name="status">Status:</string>
-    <string name="duration">Duration:</string>
-    <string name="creator">Creator:</string>
-    <string name="season">Season:</string>
+    <string name="season">Season</string>
     <string name="overview">Overview</string>
     <string name="cast">Cast</string>
     <string name="film_poster">Film Poster</string>
@@ -17,4 +12,5 @@
     <string name="postertvshows">PosterTvShows</string>
     <string name="title">Title</string>
     <string name="trailer">Trailer</string>
+    <string name="imageposter">imagePoster</string>
 </resources>

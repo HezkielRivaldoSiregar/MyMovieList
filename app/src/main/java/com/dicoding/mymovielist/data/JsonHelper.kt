@@ -33,14 +33,12 @@ class JsonHelper(private val context: Context){
                 val image = movie.getString("images")
                 val title = movie.getString("title")
                 val overview = movie.getString("overview")
-                val director = movie.getString("director")
-                val rating = movie.getString("rating")
                 val releaseDate = movie.getString("releaseDate")
                 val genre = movie.getString("genre")
-                val status = movie.getString("status")
-                val duration = movie.getString("duration")
+                val backdrop = movie.getString("backdrop")
+                val trailer = movie.getString("trailer")
 
-                val movieResponse = MovieResponse(image,title,overview,director, rating, releaseDate, genre, status, duration)
+                val movieResponse = MovieResponse(image,title,overview,releaseDate,genre,backdrop,trailer)
                 movieslist.add(movieResponse)
             }
         } catch (e: JSONException) {
@@ -60,15 +58,13 @@ class JsonHelper(private val context: Context){
                 val image = tvShow.getString("images")
                 val title = tvShow.getString("title")
                 val overview = tvShow.getString("overview")
-                val creator = tvShow.getString("creator")
-                val rating = tvShow.getString("rating")
                 val releaseDate = tvShow.getString("releaseDate")
                 val seasons = tvShow.getString("seasons")
                 val genre = tvShow.getString("genre")
-                val status = tvShow.getString("status")
-                val duration = tvShow.getString("duration")
+                var backdrop = tvShow.getString("backdrop")
+                val trailer = tvShow.getString("trailer")
 
-                val tvshowResponse = TvResponse(image,title, overview, creator, rating, releaseDate, seasons, genre, status, duration)
+                val tvshowResponse = TvResponse(image,title,overview,releaseDate,seasons,genre,backdrop,trailer )
                 showslist.add(tvshowResponse)
             }
         } catch (e: JSONException) {

@@ -1,11 +1,14 @@
 package com.dicoding.mymovielist.detail
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -40,9 +43,11 @@ class MoviesDetailActivity : AppCompatActivity(){
             setTitle(title)
             if(title != null){
                 viewModel.setSelectedMovies(title)
+                showLoading(true)
                 viewModel.getMovie().observe(this, { movie: List<Movies> ->
                     val titleIdx = movie.indexOfFirst{it.title == title}
                     populateMovies(movie[titleIdx])
+                    showLoading(false)
                 })
             }
         }
@@ -51,12 +56,8 @@ class MoviesDetailActivity : AppCompatActivity(){
     private fun populateMovies(movies: Movies){
         binding.tvTitle.text = movies.title
         binding.tvOverview.text = movies.overview
-        binding.tvDirector.text = movies.director
-        binding.tvRating.text = movies.rating
         binding.tvReleaseDate.text = movies.releaseDate
         binding.tvGenre.text = movies.genre
-        binding.tvStatus.text = movies.status
-        binding.tvDuration.text = movies.duration
         Glide.with(this)
             .load(movies.image)
             .transform(RoundedCorners(20))
@@ -64,6 +65,20 @@ class MoviesDetailActivity : AppCompatActivity(){
                 RequestOptions.placeholderOf(R.drawable.ic_image)
                 .error(R.drawable.ic_error))
             .into(binding.itemImage)
+        Glide.with(this)
+            .load(movies.backdrop)
+            .apply(
+                RequestOptions.placeholderOf(R.drawable.ic_image)
+                    .error(R.drawable.ic_error))
+            .into(binding.itemBackdrop)
+
+        binding.btnTrailer.setOnClickListener{
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(movies.trailer))
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.setPackage("com.google.android.youtube")
+            startActivity(intent)
+            Log.d("tes",movies.trailer)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -95,6 +110,36 @@ class MoviesDetailActivity : AppCompatActivity(){
             toast.show()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showLoading(state: Boolean) {
+        if (state) {
+            binding.apply {
+                circularProgressBar.visibility = View.VISIBLE
+                tvOverview.visibility = View.GONE
+                tvGenre.visibility = View.GONE
+                tvReleaseDate.visibility = View.GONE
+                tvTitle.visibility = View.GONE
+                genreTv.visibility = View.GONE
+                releaseDateTv.visibility = View.GONE
+                itemBackdrop.visibility = View.GONE
+                itemImage.visibility = View.GONE
+                btnTrailer.visibility = View.GONE
+            }
+        } else {
+            binding.apply {
+                circularProgressBar.visibility = View.GONE
+                tvOverview.visibility = View.VISIBLE
+                tvGenre.visibility = View.VISIBLE
+                tvReleaseDate.visibility = View.VISIBLE
+                tvTitle.visibility = View.VISIBLE
+                genreTv.visibility = View.VISIBLE
+                releaseDateTv.visibility = View.VISIBLE
+                itemBackdrop.visibility = View.VISIBLE
+                itemImage.visibility = View.VISIBLE
+                btnTrailer.visibility = View.VISIBLE
+            }
+        }
     }
 
 }

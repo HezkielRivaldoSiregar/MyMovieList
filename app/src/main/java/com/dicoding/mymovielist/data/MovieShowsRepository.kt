@@ -28,12 +28,10 @@ class MovieShowsRepository private constructor(private val remoteDataSource: Rem
                         response.image,
                         response.title,
                         response.overview,
-                        response.director,
-                        response.rating,
                         response.releaseDate,
                         response.genre,
-                        response.status,
-                        response.duration
+                        response.backdrop,
+                        response.trailer
                     )
                     movieList.add(movie)
                 }
@@ -54,13 +52,11 @@ class MovieShowsRepository private constructor(private val remoteDataSource: Rem
                         response.image,
                         response.title,
                         response.overview,
-                        response.creator,
-                        response.rating,
                         response.releaseDate,
                         response.seasons,
                         response.genre,
-                        response.status,
-                        response.duration
+                        response.backdrop,
+                        response.trailer
                     )
                     tvShowList.add(tvshow)
                 }
