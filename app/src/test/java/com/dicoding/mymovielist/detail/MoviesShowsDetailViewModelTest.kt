@@ -55,14 +55,10 @@ class MoviesShowsDetailViewModelTest {
         Mockito.verify(movieShowsRepository).getAllMovies()
 
         assertNotNull(movieEntity)
-        assertEquals(moviesData.director, movieEntity?.get(0)?.director)
-        assertEquals(moviesData.duration, movieEntity?.get(0)?.duration)
         assertEquals(moviesData.genre, movieEntity?.get(0)?.genre)
         assertEquals(moviesData.image, movieEntity?.get(0)?.image)
         assertEquals(moviesData.overview, movieEntity?.get(0)?.overview)
-        assertEquals(moviesData.rating, movieEntity?.get(0)?.rating)
         assertEquals(moviesData.releaseDate, movieEntity?.get(0)?.releaseDate)
-        assertEquals(moviesData.status, movieEntity?.get(0)?.status)
         assertEquals(moviesData.title, movieEntity?.get(0)?.title)
 
 
