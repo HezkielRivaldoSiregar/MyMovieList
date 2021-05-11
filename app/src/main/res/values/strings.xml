@@ -13,4 +13,7 @@
     <string name="title">Title</string>
     <string name="trailer">Trailer</string>
     <string name="imageposter">imagePoster</string>
+    <string name="movieverse">MovieVerse</string>
+    <string name="exampleGenre">42 Minutes</string>
+    <string name="duration">Duration:</string>
 </resources>

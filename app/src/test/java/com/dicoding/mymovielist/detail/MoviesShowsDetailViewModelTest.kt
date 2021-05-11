@@ -60,6 +60,9 @@ class MoviesShowsDetailViewModelTest {
         assertEquals(moviesData.overview, movieEntity?.get(0)?.overview)
         assertEquals(moviesData.releaseDate, movieEntity?.get(0)?.releaseDate)
         assertEquals(moviesData.title, movieEntity?.get(0)?.title)
+        assertEquals(moviesData.backdrop, movieEntity?.get(0)?.backdrop)
+        assertEquals(moviesData.trailer, movieEntity?.get(0)?.trailer)
+
 
 
         viewModel.getMovie().observeForever(movieObserver)
@@ -76,16 +79,14 @@ class MoviesShowsDetailViewModelTest {
         Mockito.verify(movieShowsRepository).getAllShows()
 
         assertNotNull(showEntity)
-        assertEquals(showsData.creator, showEntity?.get(0)?.creator)
-        assertEquals(showsData.duration, showEntity?.get(0)?.duration)
         assertEquals(showsData.genre, showEntity?.get(0)?.genre)
         assertEquals(showsData.image, showEntity?.get(0)?.image)
         assertEquals(showsData.overview, showEntity?.get(0)?.overview)
-        assertEquals(showsData.rating, showEntity?.get(0)?.rating)
         assertEquals(showsData.releaseDate, showEntity?.get(0)?.releaseDate)
-        assertEquals(showsData.status, showEntity?.get(0)?.status)
         assertEquals(showsData.title, showEntity?.get(0)?.title)
         assertEquals(showsData.seasons, showEntity?.get(0)?.seasons)
+        assertEquals(moviesData.backdrop, showEntity?.get(0)?.backdrop)
+        assertEquals(moviesData.trailer, showEntity?.get(0)?.trailer)
 
         viewModel.getTvshow().observeForever(showObserver)
         Mockito.verify(showObserver).onChanged(listOf(showsData))

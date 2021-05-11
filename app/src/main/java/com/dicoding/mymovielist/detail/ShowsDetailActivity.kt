@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -57,7 +56,8 @@ class ShowsDetailActivity : AppCompatActivity() {
         binding.tvOverview.text = shows.overview
         binding.tvReleaseDate.text = shows.releaseDate
         binding.tvGenre.text = shows.genre
-        binding.tvSeasons.text = shows.seasons
+        binding.tvSeason.text = shows.seasons
+        binding.tvDuration.text = shows.duration
         Glide.with(this)
             .load(shows.image)
             .transform(RoundedCorners(20))
@@ -77,7 +77,6 @@ class ShowsDetailActivity : AppCompatActivity() {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             intent.setPackage("com.google.android.youtube")
             startActivity(intent)
-            Log.d("tes",shows.trailer)
         }
     }
 
@@ -115,12 +114,14 @@ class ShowsDetailActivity : AppCompatActivity() {
     private fun showLoading(state: Boolean) {
         if (state) {
             binding.apply {
-                circularProgressBar.visibility = View.VISIBLE
+                progressBar.visibility = View.VISIBLE
                 tvOverview.visibility = View.GONE
                 tvGenre.visibility = View.GONE
                 tvReleaseDate.visibility = View.GONE
                 tvTitle.visibility = View.GONE
-                seasonTv.visibility = View.GONE
+                tvSeason.visibility = View.GONE
+                tvDuration.visibility = View.GONE
+                durationTv.visibility = View.GONE
                 genreTv.visibility = View.GONE
                 releaseDateTv.visibility = View.GONE
                 itemBackdrop.visibility = View.GONE
@@ -129,13 +130,15 @@ class ShowsDetailActivity : AppCompatActivity() {
             }
         } else {
             binding.apply {
-                circularProgressBar.visibility = View.GONE
+                progressBar.visibility = View.GONE
                 tvOverview.visibility = View.VISIBLE
                 tvGenre.visibility = View.VISIBLE
                 tvReleaseDate.visibility = View.VISIBLE
                 tvTitle.visibility = View.VISIBLE
+                tvSeason.visibility = View.VISIBLE
+                tvDuration.visibility = View.VISIBLE
+                durationTv.visibility = View.VISIBLE
                 genreTv.visibility = View.VISIBLE
-                seasonTv.visibility = View.VISIBLE
                 releaseDateTv.visibility = View.VISIBLE
                 itemBackdrop.visibility = View.VISIBLE
                 itemImage.visibility = View.VISIBLE

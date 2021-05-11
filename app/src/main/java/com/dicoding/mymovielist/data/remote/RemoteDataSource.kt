@@ -4,8 +4,8 @@ import android.os.Handler
 import android.os.Looper
 import com.dicoding.mymovielist.data.EspressoIdlingResources
 import com.dicoding.mymovielist.data.JsonHelper
-import com.dicoding.mymovielist.data.remote.response.MovieResponse
-import com.dicoding.mymovielist.data.remote.response.TvResponse
+import com.dicoding.mymovielist.data.local.Movies
+import com.dicoding.mymovielist.data.local.TvShows
 
 class RemoteDataSource private constructor(private val jsonHelper: JsonHelper) {
 
@@ -41,10 +41,10 @@ class RemoteDataSource private constructor(private val jsonHelper: JsonHelper) {
     }
 
     interface LoadTvShowsCallback {
-        fun onAllTvShowsReceived(tvShowResponses: List<TvResponse>)
+        fun onAllTvShowsReceived(tvShowResponses: List<TvShows>)
     }
 
     interface LoadMoviesCallback {
-        fun onAllMoviesReceived(movieResponses: List<MovieResponse>)
+        fun onAllMoviesReceived(movieRespons: List<Movies>)
     }
 }

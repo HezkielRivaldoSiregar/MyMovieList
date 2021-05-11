@@ -46,7 +46,8 @@ class ListMoviesAdapter : RecyclerView.Adapter<ListMoviesAdapter.MoviesViewHolde
                 }
                 Glide.with(itemView.context)
                     .load(movies.image)
-                    .apply(RequestOptions.placeholderOf(R.drawable.ic_image)
+                    .apply(
+                        RequestOptions.placeholderOf(R.drawable.ic_image)
                         .error(R.drawable.ic_error))
                     .into(itemImage)
             }

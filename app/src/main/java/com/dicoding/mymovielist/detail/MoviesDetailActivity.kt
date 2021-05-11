@@ -3,7 +3,6 @@ package com.dicoding.mymovielist.detail
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -58,6 +57,7 @@ class MoviesDetailActivity : AppCompatActivity(){
         binding.tvOverview.text = movies.overview
         binding.tvReleaseDate.text = movies.releaseDate
         binding.tvGenre.text = movies.genre
+        binding.tvDuration.text = movies.duration
         Glide.with(this)
             .load(movies.image)
             .transform(RoundedCorners(20))
@@ -77,7 +77,6 @@ class MoviesDetailActivity : AppCompatActivity(){
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             intent.setPackage("com.google.android.youtube")
             startActivity(intent)
-            Log.d("tes",movies.trailer)
         }
     }
 
@@ -115,11 +114,13 @@ class MoviesDetailActivity : AppCompatActivity(){
     private fun showLoading(state: Boolean) {
         if (state) {
             binding.apply {
-                circularProgressBar.visibility = View.VISIBLE
+                progressBar.visibility = View.VISIBLE
                 tvOverview.visibility = View.GONE
                 tvGenre.visibility = View.GONE
                 tvReleaseDate.visibility = View.GONE
                 tvTitle.visibility = View.GONE
+                tvDuration.visibility = View.GONE
+                durationTv.visibility = View.GONE
                 genreTv.visibility = View.GONE
                 releaseDateTv.visibility = View.GONE
                 itemBackdrop.visibility = View.GONE
@@ -128,11 +129,13 @@ class MoviesDetailActivity : AppCompatActivity(){
             }
         } else {
             binding.apply {
-                circularProgressBar.visibility = View.GONE
+                progressBar.visibility = View.GONE
                 tvOverview.visibility = View.VISIBLE
                 tvGenre.visibility = View.VISIBLE
                 tvReleaseDate.visibility = View.VISIBLE
                 tvTitle.visibility = View.VISIBLE
+                tvDuration.visibility = View.VISIBLE
+                durationTv.visibility = View.VISIBLE
                 genreTv.visibility = View.VISIBLE
                 releaseDateTv.visibility = View.VISIBLE
                 itemBackdrop.visibility = View.VISIBLE

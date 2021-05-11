@@ -19,8 +19,8 @@ class MovieShowsRepositoryTest {
     private val remote = mock(RemoteDataSource::class.java)
     private val movieShowsRepository = FakeMovieShowsRepository(remote)
 
-    private val movieResponse = MoviesTvShowsData.generateRemoteMoviesData()
-    private val showResponse = MoviesTvShowsData.generateRemoteTvShowsData()
+    private val movieResponse = MoviesTvShowsData.generateMoviesData()
+    private val showResponse = MoviesTvShowsData.generateTvShowsData()
 
     @Test
     fun getAllMovies(){

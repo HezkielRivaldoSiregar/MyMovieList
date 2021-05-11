@@ -7,5 +7,6 @@ data class Movies(
     var releaseDate: String= "",
     var genre: String= "",
     var backdrop: String = "",
-    var trailer: String = ""
+    var trailer: String = "",
+    var duration: String = ""
 )

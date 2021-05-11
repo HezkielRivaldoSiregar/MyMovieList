@@ -13,18 +13,14 @@ class TabLayoutAdapter(activity: AppCompatActivity, data: Bundle) :
     private var fragmentBundle: Bundle = data
 
     override fun createFragment(position: Int): Fragment {
-        var fragment: Fragment? = null
-        when (position) {
-            0 -> fragment = MoviesFragment()
-            1 -> fragment = ShowsFragment()
+        return when(position){
+            0 -> MoviesFragment()
+            1 -> ShowsFragment()
+            else -> Fragment()
+        }.also {
+            it.arguments = this.fragmentBundle
         }
-        fragment?.arguments = this.fragmentBundle
-        return fragment as Fragment
     }
 
-    override fun getItemCount(): Int {
-        return 2
-    }
-
-
+    override fun getItemCount() = 2
 }

@@ -5,8 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.dicoding.mymovielist.data.local.Movies
 import com.dicoding.mymovielist.data.local.TvShows
 import com.dicoding.mymovielist.data.remote.RemoteDataSource
-import com.dicoding.mymovielist.data.remote.response.MovieResponse
-import com.dicoding.mymovielist.data.remote.response.TvResponse
 
 class MovieShowsRepository private constructor(private val remoteDataSource: RemoteDataSource) : MovieShowsDataSource {
 
@@ -21,9 +19,9 @@ class MovieShowsRepository private constructor(private val remoteDataSource: Rem
     override fun getAllMovies(): LiveData<List<Movies>> {
         val movieResults = MutableLiveData<List<Movies>>()
         remoteDataSource.getAllMovies(object : RemoteDataSource.LoadMoviesCallback {
-            override fun onAllMoviesReceived(movieResponses: List<MovieResponse>) {
+            override fun onAllMoviesReceived(movieRespons: List<Movies>) {
                 val movieList = ArrayList<Movies>()
-                for (response in movieResponses) {
+                for (response in movieRespons) {
                     val movie = Movies(
                         response.image,
                         response.title,
@@ -31,7 +29,8 @@ class MovieShowsRepository private constructor(private val remoteDataSource: Rem
                         response.releaseDate,
                         response.genre,
                         response.backdrop,
-                        response.trailer
+                        response.trailer,
+                        response.duration
                     )
                     movieList.add(movie)
                 }
@@ -45,7 +44,7 @@ class MovieShowsRepository private constructor(private val remoteDataSource: Rem
     override fun getAllShows(): LiveData<List<TvShows>> {
         val tvShowResults = MutableLiveData<List<TvShows>>()
         remoteDataSource.getAllShows(object : RemoteDataSource.LoadTvShowsCallback {
-            override fun onAllTvShowsReceived(tvShowResponses: List<TvResponse>) {
+            override fun onAllTvShowsReceived(tvShowResponses: List<TvShows>) {
                 val tvShowList = ArrayList<TvShows>()
                 for (response in tvShowResponses) {
                     val tvshow = TvShows(
@@ -56,7 +55,8 @@ class MovieShowsRepository private constructor(private val remoteDataSource: Rem
                         response.seasons,
                         response.genre,
                         response.backdrop,
-                        response.trailer
+                        response.trailer,
+                        response.duration
                     )
                     tvShowList.add(tvshow)
                 }

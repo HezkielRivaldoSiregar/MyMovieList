@@ -8,5 +8,6 @@ data class TvShows (
     var seasons: String,
     var genre: String,
     var backdrop: String,
-    var trailer: String
+    var trailer: String,
+    var duration: String
 )
