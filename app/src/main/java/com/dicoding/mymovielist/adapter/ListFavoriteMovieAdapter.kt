@@ -13,9 +13,10 @@ import com.dicoding.mymovielist.data.local.Movies
 import com.dicoding.mymovielist.databinding.ItemRowBinding
 import com.dicoding.mymovielist.detail.MoviesDetailActivity
 
-class ListMoviesAdapter : PagedListAdapter<Movies, ListMoviesAdapter.MoviesViewHolder>(DIFF_CALLBACK) {
+class ListFavoriteMovieAdapter : PagedListAdapter<Movies, ListFavoriteMovieAdapter.FavoriteMovieViewHolder>(DIFF_CALLBACK) {
 
-    companion object{
+    companion object {
+
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Movies>() {
 
             override fun areItemsTheSame(oldItem: Movies, newItem: Movies): Boolean {
@@ -25,22 +26,28 @@ class ListMoviesAdapter : PagedListAdapter<Movies, ListMoviesAdapter.MoviesViewH
             override fun areContentsTheSame(oldItem: Movies, newItem: Movies): Boolean {
                 return oldItem == newItem
             }
+
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteMovieViewHolder {
         val itemRowBinding = ItemRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MoviesViewHolder(itemRowBinding)
+        return FavoriteMovieViewHolder(itemRowBinding)
     }
 
-    override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
-        val movies = getItem(position)
-        if (movies != null) {
-            holder.bind(movies)
+    override fun onBindViewHolder(
+        holder: ListFavoriteMovieAdapter.FavoriteMovieViewHolder,
+        position: Int
+    ) {
+        val movie = getItem(position)
+        if (movie != null) {
+            holder.bind(movie)
         }
     }
 
-    class MoviesViewHolder(private val binding: ItemRowBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class FavoriteMovieViewHolder(private val binding: ItemRowBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
         fun bind(movies: Movies) {
             with(binding) {
                 tvTitle.text = movies.title
@@ -56,10 +63,9 @@ class ListMoviesAdapter : PagedListAdapter<Movies, ListMoviesAdapter.MoviesViewH
                     .load(movies.image)
                     .apply(
                         RequestOptions.placeholderOf(R.drawable.ic_image)
-                        .error(R.drawable.ic_error))
+                            .error(R.drawable.ic_error))
                     .into(itemImage)
             }
         }
     }
-
 }

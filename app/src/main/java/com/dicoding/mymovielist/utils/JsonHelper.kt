@@ -1,4 +1,4 @@
-package com.dicoding.mymovielist.data
+package com.dicoding.mymovielist.utils
 
 import android.content.Context
 import com.dicoding.mymovielist.data.local.Movies
@@ -30,6 +30,7 @@ class JsonHelper(private val context: Context){
             for (i in 0 until listArray.length()) {
                 val movie = listArray.getJSONObject(i)
 
+                val id = movie.getInt("id")
                 val image = movie.getString("images")
                 val title = movie.getString("title")
                 val overview = movie.getString("overview")
@@ -39,7 +40,7 @@ class JsonHelper(private val context: Context){
                 val trailer = movie.getString("trailer")
                 val duration = movie.getString("duration")
 
-                val movieResponse = Movies(image,title,overview,releaseDate,genre,backdrop,trailer,duration)
+                val movieResponse = Movies(id,image,title,overview,releaseDate,genre,backdrop,trailer,duration)
                 movieslist.add(movieResponse)
             }
         } catch (e: JSONException) {
@@ -56,6 +57,7 @@ class JsonHelper(private val context: Context){
             for (i in 0 until listArray.length()) {
                 val tvShow = listArray.getJSONObject(i)
 
+                val id = tvShow.getInt("id")
                 val image = tvShow.getString("images")
                 val title = tvShow.getString("title")
                 val overview = tvShow.getString("overview")
@@ -66,7 +68,7 @@ class JsonHelper(private val context: Context){
                 val trailer = tvShow.getString("trailer")
                 val duration = tvShow.getString("duration")
 
-                val tvshowResponse = TvShows(image,title,overview,releaseDate,seasons,genre,backdrop,trailer,duration)
+                val tvshowResponse = TvShows(id,image,title,overview,releaseDate,seasons,genre,backdrop,trailer,duration)
                 showslist.add(tvshowResponse)
             }
         } catch (e: JSONException) {

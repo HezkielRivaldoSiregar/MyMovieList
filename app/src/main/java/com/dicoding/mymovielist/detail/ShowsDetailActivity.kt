@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -17,13 +18,17 @@ import com.dicoding.mymovielist.ViewModelFactory
 import com.dicoding.mymovielist.data.local.TvShows
 import com.dicoding.mymovielist.databinding.ActivityShowsDetailBinding
 import com.dicoding.mymovielist.main.MainActivity
+import com.dicoding.mymovielist.vo.Status
 
 class ShowsDetailActivity : AppCompatActivity() {
+
     companion object{
         const val EXTRA_TITLE = "extra_title"
+        const val EXTRA_ID = "extra_id"
     }
 
     private lateinit var binding: ActivityShowsDetailBinding
+    private lateinit var viewModel: MoviesShowsDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,25 +38,34 @@ class ShowsDetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val factory = ViewModelFactory.getInstance(this)
-        val viewModel = ViewModelProvider(this, factory)[MoviesShowsDetailViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory)[MoviesShowsDetailViewModel::class.java]
 
         val extras = intent.extras
         if(extras!=null){
             val title = extras.getString(EXTRA_TITLE)
+            val showId = extras.getInt(EXTRA_ID)
+
             setTitle(title)
-            if(title != null){
-                viewModel.setSelectedShows(title)
-                showLoading(true)
-                viewModel.getTvshow().observe(this, {shows: List<TvShows> ->
-                    val titleIdx = shows.indexOfFirst{it.title == title}
-                populateShows(shows[titleIdx])
-                    showLoading(false)
-                })
-            }
+            viewModel.setSelectedShows(showId)
+            viewModel.tvShow.observe(this, { shows ->
+                when (shows.status) {
+                    Status.LOADING -> showLoading(true)
+                    Status.SUCCESS -> if (shows.data != null) {
+                        showLoading(false)
+                        populateShows(shows.data)
+                    }
+                    Status.ERROR -> {
+                        showLoading(false)
+                        Toast.makeText(applicationContext, resources.getString(R.string.error), Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
         }
     }
 
     private fun populateShows(shows: TvShows){
+        val state = shows.favorited
+        setFavorite(state)
         binding.tvTitle.text = shows.title
         binding.tvOverview.text = shows.overview
         binding.tvReleaseDate.text = shows.releaseDate
@@ -77,6 +91,30 @@ class ShowsDetailActivity : AppCompatActivity() {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             intent.setPackage("com.google.android.youtube")
             startActivity(intent)
+        }
+        binding.floatingFavorite.setOnClickListener{
+            state != state
+            setFavorite(state)
+            viewModel.setFavorite()
+            if(state == false){
+                val toast = Toast.makeText(applicationContext, "\"${title}\" Added to Favorite", Toast.LENGTH_SHORT)
+                toast.show()
+            }else{
+                val toast = Toast.makeText(applicationContext, "\"${title}\" Removed to Favorite", Toast.LENGTH_SHORT)
+                toast.show()
+            }
+        }
+    }
+
+    private fun setFavorite(state: Boolean) {
+        if(state){
+            binding.floatingFavorite.setImageDrawable(
+                ContextCompat.getDrawable(this, R.drawable.ic_favorite_true)
+            )
+        }else{
+            binding.floatingFavorite.setImageDrawable(
+                ContextCompat.getDrawable(this, R.drawable.ic_favorite_false)
+            )
         }
     }
 
@@ -127,6 +165,7 @@ class ShowsDetailActivity : AppCompatActivity() {
                 itemBackdrop.visibility = View.GONE
                 itemImage.visibility = View.GONE
                 btnTrailer.visibility = View.GONE
+                floatingFavorite.visibility = View.GONE
             }
         } else {
             binding.apply {
@@ -143,6 +182,7 @@ class ShowsDetailActivity : AppCompatActivity() {
                 itemBackdrop.visibility = View.VISIBLE
                 itemImage.visibility = View.VISIBLE
                 btnTrailer.visibility = View.VISIBLE
+                floatingFavorite.visibility = View.VISIBLE
             }
         }
     }

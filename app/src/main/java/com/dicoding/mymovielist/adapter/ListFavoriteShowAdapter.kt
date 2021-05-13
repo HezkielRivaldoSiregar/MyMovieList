@@ -3,7 +3,6 @@ package com.dicoding.mymovielist.adapter
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagedList
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -12,13 +11,12 @@ import com.bumptech.glide.request.RequestOptions
 import com.dicoding.mymovielist.R
 import com.dicoding.mymovielist.data.local.TvShows
 import com.dicoding.mymovielist.databinding.ItemRowBinding
-import com.dicoding.mymovielist.detail.MoviesDetailActivity
 import com.dicoding.mymovielist.detail.ShowsDetailActivity
-import com.dicoding.mymovielist.vo.Resource
 
-class ListTvShowsAdapter:  PagedListAdapter<TvShows, ListTvShowsAdapter.TvShowsViewHolder>(DIFF_CALLBACK)  {
+class ListFavoriteShowAdapter : PagedListAdapter<TvShows, ListFavoriteShowAdapter.FavoriteShowViewHolder>(DIFF_CALLBACK) {
 
-    companion object{
+    companion object {
+
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShows>() {
 
             override fun areItemsTheSame(oldItem: TvShows, newItem: TvShows): Boolean {
@@ -28,43 +26,46 @@ class ListTvShowsAdapter:  PagedListAdapter<TvShows, ListTvShowsAdapter.TvShowsV
             override fun areContentsTheSame(oldItem: TvShows, newItem: TvShows): Boolean {
                 return oldItem == newItem
             }
+
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowsViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteShowViewHolder {
         val itemRowBinding = ItemRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TvShowsViewHolder(itemRowBinding)
+        return FavoriteShowViewHolder(itemRowBinding)
     }
 
-    override fun onBindViewHolder(holder: TvShowsViewHolder, position: Int) {
-        val tvShows = getItem(position)
-        if (tvShows != null) {
-            holder.bind(tvShows)
+    override fun onBindViewHolder(
+        holder: ListFavoriteShowAdapter.FavoriteShowViewHolder,
+        position: Int
+    ) {
+        val shows = getItem(position)
+        if (shows != null) {
+            holder.bind(shows)
         }
     }
 
-    class TvShowsViewHolder(private val binding: ItemRowBinding) :
+    inner class FavoriteShowViewHolder(private val binding: ItemRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(tvShows: TvShows) {
+
+        fun bind(shows: TvShows) {
             with(binding) {
-                tvTitle.text = tvShows.title
-                tvDesc.text = tvShows.overview
+                tvTitle.text = shows.title
+                tvDesc.text = shows.overview
 
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, ShowsDetailActivity::class.java)
-                    intent.putExtra(MoviesDetailActivity.EXTRA_TITLE, tvShows.title)
-                    intent.putExtra(MoviesDetailActivity.EXTRA_ID, tvShows.id)
+                    intent.putExtra(ShowsDetailActivity.EXTRA_TITLE, shows.title)
+                    intent.putExtra(ShowsDetailActivity.EXTRA_ID, shows.id)
                     itemView.context.startActivity(intent)
                 }
                 Glide.with(itemView.context)
-                    .load(tvShows.image)
+                    .load(shows.image)
                     .apply(
                         RequestOptions.placeholderOf(R.drawable.ic_image)
-                            .error(R.drawable.ic_error)
-                    )
+                            .error(R.drawable.ic_error))
                     .into(itemImage)
             }
         }
     }
-
 }

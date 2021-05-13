@@ -16,4 +16,6 @@
     <string name="movieverse">MovieVerse</string>
     <string name="exampleGenre">42 Minutes</string>
     <string name="duration">Duration:</string>
+    <string name="favorite">Favorite</string>
+    <string name="error">error</string>
 </resources>

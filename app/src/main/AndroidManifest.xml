@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyMovieList">
         <activity android:name=".main.MainActivity" />
+        <activity android:name=".favorite.FavoriteActivity"/>
         <activity android:name=".detail.ShowsDetailActivity" />
         <activity android:name=".detail.MoviesDetailActivity" />
         <activity android:name=".splashscreen.SplashScreenActivity">

@@ -6,9 +6,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.dicoding.mymovielist.data.MovieShowsRepository
 import com.dicoding.mymovielist.detail.MoviesShowsDetailViewModel
 import com.dicoding.mymovielist.di.Injection
+import com.dicoding.mymovielist.favorite.FavoriteMovieShowsViewModel
 import com.dicoding.mymovielist.main.MoviesShowsViewModel
 
-class ViewModelFactory private constructor(private val mMovieShowsRepository: MovieShowsRepository) : ViewModelProvider.NewInstanceFactory() {
+class ViewModelFactory private constructor(private val movieShowsRepository: MovieShowsRepository) : ViewModelProvider.NewInstanceFactory() {
 
     companion object {
         @Volatile
@@ -23,10 +24,13 @@ class ViewModelFactory private constructor(private val mMovieShowsRepository: Mo
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(MoviesShowsViewModel::class.java) -> {
-                MoviesShowsViewModel(mMovieShowsRepository) as T
+                MoviesShowsViewModel(movieShowsRepository) as T
             }
             modelClass.isAssignableFrom(MoviesShowsDetailViewModel::class.java) -> {
-                MoviesShowsDetailViewModel(mMovieShowsRepository) as T
+                MoviesShowsDetailViewModel(movieShowsRepository) as T
+            }
+            modelClass.isAssignableFrom(FavoriteMovieShowsViewModel::class.java) -> {
+                FavoriteMovieShowsViewModel(movieShowsRepository) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

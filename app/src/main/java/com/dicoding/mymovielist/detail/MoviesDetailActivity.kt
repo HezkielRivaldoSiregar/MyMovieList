@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -17,14 +18,17 @@ import com.dicoding.mymovielist.ViewModelFactory
 import com.dicoding.mymovielist.data.local.Movies
 import com.dicoding.mymovielist.databinding.ActivityMoviesDetailBinding
 import com.dicoding.mymovielist.main.MainActivity
+import com.dicoding.mymovielist.vo.Status
 
 class MoviesDetailActivity : AppCompatActivity(){
 
     companion object{
         const val EXTRA_TITLE = "extra_title"
+        const val EXTRA_ID = "extra_id"
     }
 
     private lateinit var binding: ActivityMoviesDetailBinding
+    private lateinit var viewModel: MoviesShowsDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,25 +38,35 @@ class MoviesDetailActivity : AppCompatActivity(){
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val factory = ViewModelFactory.getInstance(this)
-        val viewModel = ViewModelProvider(this, factory)[MoviesShowsDetailViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory)[MoviesShowsDetailViewModel::class.java]
 
         val extras = intent.extras
         if(extras!=null){
             val title = extras.getString(EXTRA_TITLE)
+            val movieId = extras.getInt(EXTRA_ID)
+
             setTitle(title)
-            if(title != null){
-                viewModel.setSelectedMovies(title)
-                showLoading(true)
-                viewModel.getMovie().observe(this, { movie: List<Movies> ->
-                    val titleIdx = movie.indexOfFirst{it.title == title}
-                    populateMovies(movie[titleIdx])
-                    showLoading(false)
-                })
-            }
+            viewModel.setSelectedMovies(movieId)
+            viewModel.movie.observe(this, { movies ->
+                when (movies.status) {
+                    Status.LOADING -> showLoading(true)
+                    Status.SUCCESS -> if (movies.data != null) {
+                        showLoading(false)
+                        populateMovies(movies.data)
+                    }
+                    Status.ERROR -> {
+                        showLoading(false)
+                        Toast.makeText(applicationContext, resources.getString(R.string.error), Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
         }
     }
 
     private fun populateMovies(movies: Movies){
+        val state = movies.favorited
+        setFavorite(state)
+
         binding.tvTitle.text = movies.title
         binding.tvOverview.text = movies.overview
         binding.tvReleaseDate.text = movies.releaseDate
@@ -78,6 +92,18 @@ class MoviesDetailActivity : AppCompatActivity(){
             intent.setPackage("com.google.android.youtube")
             startActivity(intent)
         }
+        binding.floatingFavorite.setOnClickListener{
+            state != state
+            setFavorite(state)
+            viewModel.setFavorite()
+            if(state == false){
+                val toast = Toast.makeText(applicationContext, "\"${title}\" Added to Favorite", Toast.LENGTH_SHORT)
+                toast.show()
+            }else{
+                val toast = Toast.makeText(applicationContext, "\"${title}\" Removed to Favorite", Toast.LENGTH_SHORT)
+                toast.show()
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -88,7 +114,7 @@ class MoviesDetailActivity : AppCompatActivity(){
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val title = intent.getStringExtra(ShowsDetailActivity.EXTRA_TITLE)
+        val title = intent.getStringExtra(EXTRA_TITLE)
         if (item.itemId == android.R.id.home) {
             val intent = Intent(this@MoviesDetailActivity, MainActivity::class.java)
             startActivity(intent)
@@ -111,6 +137,18 @@ class MoviesDetailActivity : AppCompatActivity(){
         return super.onOptionsItemSelected(item)
     }
 
+    private fun setFavorite(state: Boolean){
+        if(state){
+            binding.floatingFavorite.setImageDrawable(
+                ContextCompat.getDrawable(this, R.drawable.ic_favorite_true)
+            )
+        }else{
+            binding.floatingFavorite.setImageDrawable(
+                ContextCompat.getDrawable(this, R.drawable.ic_favorite_false)
+            )
+        }
+    }
+
     private fun showLoading(state: Boolean) {
         if (state) {
             binding.apply {
@@ -126,6 +164,7 @@ class MoviesDetailActivity : AppCompatActivity(){
                 itemBackdrop.visibility = View.GONE
                 itemImage.visibility = View.GONE
                 btnTrailer.visibility = View.GONE
+                floatingFavorite.visibility = View.GONE
             }
         } else {
             binding.apply {
@@ -141,6 +180,7 @@ class MoviesDetailActivity : AppCompatActivity(){
                 itemBackdrop.visibility = View.VISIBLE
                 itemImage.visibility = View.VISIBLE
                 btnTrailer.visibility = View.VISIBLE
+                floatingFavorite.visibility = View.VISIBLE
             }
         }
     }

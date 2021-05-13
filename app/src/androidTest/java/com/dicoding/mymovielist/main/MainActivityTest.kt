@@ -10,8 +10,8 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.dicoding.mymovielist.R
-import com.dicoding.mymovielist.data.EspressoIdlingResources
-import com.dicoding.mymovielist.data.local.MoviesTvShowsData
+import com.dicoding.mymovielist.utils.EspressoIdlingResources
+import com.dicoding.mymovielist.utils.MoviesTvShowsData
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -54,22 +54,18 @@ class MainActivityTest{
         onView(withText(R.string.movies)).perform(click())
         onView(withId(R.id.rvShowsMovies)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
         onView((withId(R.id.itemImage))).check(matches(isDisplayed()))
+        onView((withId(R.id.itemBackdrop))).check(matches(isDisplayed()))
         onView((withId(R.id.tvTitle))).check(matches(isDisplayed()))
         onView((withId(R.id.tvTitle))).check(matches(withText(movieData[0].title)))
         onView((withId(R.id.tvOverview))).check(matches(isDisplayed()))
         onView((withId(R.id.tvOverview))).check(matches(withText(movieData[0].overview)))
-        onView((withId(R.id.tvDirector))).check(matches(isDisplayed()))
-        onView((withId(R.id.tvDirector))).check(matches(withText(movieData[0].director)))
-        onView((withId(R.id.tvRating))).check(matches(isDisplayed()))
-        onView((withId(R.id.tvRating))).check(matches(withText(movieData[0].rating)))
         onView((withId(R.id.tvReleaseDate))).check(matches(isDisplayed()))
         onView((withId(R.id.tvReleaseDate))).check(matches(withText(movieData[0].releaseDate)))
         onView((withId(R.id.tvGenre))).check(matches(isDisplayed()))
         onView((withId(R.id.tvGenre))).check(matches(withText(movieData[0].genre)))
-        onView((withId(R.id.tvStatus))).check(matches(isDisplayed()))
-        onView((withId(R.id.tvStatus))).check(matches(withText(movieData[0].status)))
         onView((withId(R.id.tvDuration))).check(matches(isDisplayed()))
         onView((withId(R.id.tvDuration))).check(matches(withText(movieData[0].duration)))
+        onView(withId(R.id.floatingFavorite)).perform(click())
         onView((withId(R.id.share))).perform(click())
     }
 
@@ -78,25 +74,41 @@ class MainActivityTest{
         onView(withText(R.string.tvShows)).perform(click())
         onView(withId(R.id.rvShowsMovies)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
         onView((withId(R.id.itemImage))).check(matches(isDisplayed()))
+        onView((withId(R.id.itemBackdrop))).check(matches(isDisplayed()))
         onView((withId(R.id.tvTitle))).check(matches(isDisplayed()))
         onView((withId(R.id.tvTitle))).check(matches(withText(showsData[0].title)))
         onView((withId(R.id.tvOverview))).check(matches(isDisplayed()))
         onView((withId(R.id.tvOverview))).check(matches(withText(showsData[0].overview)))
-        onView((withId(R.id.tvCreator))).check(matches(isDisplayed()))
-        onView((withId(R.id.tvCreator))).check(matches(withText(showsData[0].creator)))
-        onView((withId(R.id.tvRating))).check(matches(isDisplayed()))
-        onView((withId(R.id.tvRating))).check(matches(withText(showsData[0].rating)))
         onView((withId(R.id.tvReleaseDate))).check(matches(isDisplayed()))
         onView((withId(R.id.tvReleaseDate))).check(matches(withText(showsData[0].releaseDate)))
-        onView((withId(R.id.tvSeasons))).check(matches(isDisplayed()))
-        onView((withId(R.id.tvSeasons))).check(matches(withText(showsData[0].seasons)))
+        onView((withId(R.id.tvSeason))).check(matches(isDisplayed()))
+        onView((withId(R.id.tvSeason))).check(matches(withText(showsData[0].seasons)))
         onView((withId(R.id.tvGenre))).check(matches(isDisplayed()))
         onView((withId(R.id.tvGenre))).check(matches(withText(showsData[0].genre)))
-        onView((withId(R.id.tvStatus))).check(matches(isDisplayed()))
-        onView((withId(R.id.tvStatus))).check(matches(withText(showsData[0].status)))
         onView((withId(R.id.tvDuration))).check(matches(isDisplayed()))
         onView((withId(R.id.tvDuration))).check(matches(withText(showsData[0].duration)))
+        onView(withId(R.id.floatingFavorite)).perform(click())
         onView((withId(R.id.share))).perform(click())
+    }
+
+    @Test
+    fun trailerButtonShow(){
+        onView(withText(R.string.tvShows)).perform(click())
+        onView(withId(R.id.rvShowsMovies)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+        onView(withId(R.id.btnTrailer)).perform(click())
+    }
+
+    @Test
+    fun trailerButtonMovie(){
+        onView(withText(R.string.movies)).perform(click())
+        onView(withId(R.id.rvShowsMovies)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+        onView(withId(R.id.btnTrailer)).perform(click())
+    }
+
+    @Test
+    fun loadFavorite(){
+        onView(withId(R.id.favorite)).perform(click())
+        onView(withText(R.string.movies)).perform(click())
     }
 
 }
