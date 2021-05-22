@@ -4,11 +4,13 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.test.uiautomator.UiDevice
 import com.dicoding.mymovielist.R
 import com.dicoding.mymovielist.utils.EspressoIdlingResources
 import com.dicoding.mymovielist.utils.MoviesTvShowsData
@@ -37,7 +39,6 @@ class MainActivityTest{
 
     @Test
     fun loadMovies(){
-        onView(withText(R.string.movies)).perform(click())
         onView(withId(R.id.rvShowsMovies)).check(matches(isDisplayed()))
         onView(withId(R.id.rvShowsMovies)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(movieData.size))
     }
@@ -51,7 +52,6 @@ class MainActivityTest{
 
     @Test
     fun loadDetailMovies(){
-        onView(withText(R.string.movies)).perform(click())
         onView(withId(R.id.rvShowsMovies)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
         onView((withId(R.id.itemImage))).check(matches(isDisplayed()))
         onView((withId(R.id.itemBackdrop))).check(matches(isDisplayed()))
@@ -100,15 +100,16 @@ class MainActivityTest{
 
     @Test
     fun trailerButtonMovie(){
-        onView(withText(R.string.movies)).perform(click())
         onView(withId(R.id.rvShowsMovies)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
         onView(withId(R.id.btnTrailer)).perform(click())
     }
 
     @Test
-    fun loadFavorite(){
+    fun MoviesShowFavorite(){
         onView(withId(R.id.favorite)).perform(click())
-        onView(withText(R.string.movies)).perform(click())
+        onView(withId(R.id.rvShowsMovies)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+        onView(isRoot()).perform(ViewActions.pressBack())
+        onView(withId(R.string.tvShows)).perform(click())
+        onView(withId(R.id.rvShowsMovies)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
     }
-
 }

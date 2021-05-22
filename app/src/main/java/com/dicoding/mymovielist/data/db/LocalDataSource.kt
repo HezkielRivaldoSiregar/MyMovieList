@@ -1,6 +1,5 @@
 package com.dicoding.mymovielist.data.db
 
-import android.graphics.Movie
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import com.dicoding.mymovielist.data.local.Movies

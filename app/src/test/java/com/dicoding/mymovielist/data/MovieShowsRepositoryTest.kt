@@ -17,8 +17,7 @@ import org.junit.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
+import org.mockito.Mockito.*
 import java.util.concurrent.Executors
 
 class MovieShowsRepositoryTest {
@@ -37,7 +36,7 @@ class MovieShowsRepositoryTest {
     @Test
     fun getAllMovies() {
         val dataSourceFactory = mock(DataSource.Factory::class.java) as DataSource.Factory<Int, Movies>
-        Mockito.`when`(local.getMovies()).thenReturn(dataSourceFactory)
+        `when`(local.getMovies()).thenReturn(dataSourceFactory)
         movieCatalogueRepository.getAllMovies()
 
         val movieEntities = Resource.success(PagedListUtils.mockPagedList(MoviesTvShowsData.generateMoviesData()))
@@ -49,7 +48,7 @@ class MovieShowsRepositoryTest {
     @Test
     fun getAllTvShows(){
         val dataSourceFactory = mock(DataSource.Factory::class.java) as DataSource.Factory<Int, TvShows>
-        Mockito.`when`(local.getShow()).thenReturn(dataSourceFactory)
+        `when`(local.getShow()).thenReturn(dataSourceFactory)
         movieCatalogueRepository.getAllTvShows()
 
         val showEntities = Resource.success(PagedListUtils.mockPagedList(MoviesTvShowsData.generateTvShowsData()))
@@ -59,9 +58,9 @@ class MovieShowsRepositoryTest {
     }
 
     @Test
-    fun getFavoriteMovie() {
+    fun getFavoriteMovies() {
         val dataSourceFactory = mock(DataSource.Factory::class.java) as DataSource.Factory<Int, Movies>
-        Mockito.`when`(local.getFavoriteMovie()).thenReturn(dataSourceFactory)
+        `when`(local.getFavoriteMovie()).thenReturn(dataSourceFactory)
         movieCatalogueRepository.getFavoriteMovies()
 
         val favoriteMovieEntities = Resource.success(PagedListUtils.mockPagedList(MoviesTvShowsData.generateMoviesData()))
@@ -71,9 +70,9 @@ class MovieShowsRepositoryTest {
     }
 
     @Test
-    fun getFavoriteShow() {
+    fun getFavoriteTvShows() {
         val dataSourceFactory = mock(DataSource.Factory::class.java) as DataSource.Factory<Int, TvShows>
-        Mockito.`when`(local.getFavoriteShow()).thenReturn(dataSourceFactory)
+        `when`(local.getFavoriteShow()).thenReturn(dataSourceFactory)
         movieCatalogueRepository.getFavoriteTvShows()
 
         val favoriteShowEntities = Resource.success(PagedListUtils.mockPagedList(MoviesTvShowsData.generateTvShowsData()))
@@ -83,7 +82,7 @@ class MovieShowsRepositoryTest {
     }
 
     @Test
-    fun setMovieFavorite() {
+    fun setFavoriteMovie() {
         val localData = LocalDataSource.getInstance(dao)
         val movieData = MoviesTvShowsData.generateMoviesData()[0]
         val expectedData = movieData.copy(favorited = true)
@@ -95,16 +94,16 @@ class MovieShowsRepositoryTest {
     }
 
     @Test
-    fun setTvShowFavorite() {
-        val showData = MoviesTvShowsData.generateTvShowsData()[0]
-        val newState = !showData.favorited
+    fun setFavoriteTvShow() {
+        val tvShowData = MoviesTvShowsData.generateTvShowsData()[0]
+        val newState = !tvShowData.favorited
 
         `when`(appExecutors.diskIO()).thenReturn(Executors.newSingleThreadExecutor())
-        local.setFavoriteTvShow(showData, newState)
+        local.setFavoriteTvShow(tvShowData, newState)
 
-        movieCatalogueRepository.setFavoriteTvShow(showData, newState)
-        verify(local, Mockito.times(1)).setFavoriteTvShow(showData, newState)
-        Mockito.verifyNoMoreInteractions(local)
+        movieCatalogueRepository.setFavoriteTvShow(tvShowData, newState)
+        verify(local, times(1)).setFavoriteTvShow(tvShowData,newState)
+        verifyNoMoreInteractions(local)
     }
 
 }

@@ -3,7 +3,6 @@ package com.dicoding.mymovielist.adapter
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagedList
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +13,6 @@ import com.dicoding.mymovielist.data.local.TvShows
 import com.dicoding.mymovielist.databinding.ItemRowBinding
 import com.dicoding.mymovielist.detail.MoviesDetailActivity
 import com.dicoding.mymovielist.detail.ShowsDetailActivity
-import com.dicoding.mymovielist.vo.Resource
 
 class ListTvShowsAdapter:  PagedListAdapter<TvShows, ListTvShowsAdapter.TvShowsViewHolder>(DIFF_CALLBACK)  {
 

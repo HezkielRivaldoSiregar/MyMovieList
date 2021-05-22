@@ -12,17 +12,7 @@ class FavoriteMovieShowsViewModel (private val movieShowsRepository: MovieShowsR
     fun getFavoriteMovies(): LiveData<PagedList<Movies>> =
         movieShowsRepository.getFavoriteMovies()
 
-    fun setFavoriteMovie(movie: Movies) {
-        val newState = !movie.favorited
-        movieShowsRepository.setFavoriteMovie(movie, newState)
-    }
-
     fun getFavoriteShow(): LiveData<PagedList<TvShows>> =
         movieShowsRepository.getFavoriteTvShows()
-
-    fun setFavoriteShow(show: TvShows) {
-        val newState = !show.favorited
-        movieShowsRepository.setFavoriteTvShow(show, newState)
-    }
 
 }

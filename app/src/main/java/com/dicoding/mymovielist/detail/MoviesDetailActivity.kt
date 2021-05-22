@@ -96,7 +96,7 @@ class MoviesDetailActivity : AppCompatActivity(){
             state != state
             setFavorite(state)
             viewModel.setFavorite()
-            if(state == false){
+            if(!state){
                 val toast = Toast.makeText(applicationContext, "\"${title}\" Added to Favorite", Toast.LENGTH_SHORT)
                 toast.show()
             }else{
