@@ -21,8 +21,8 @@
         android:id="@+id/itemImage"
         android:layout_width="100dp"
         android:layout_height="135dp"
-        android:layout_marginTop="120dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="124dp"
+        android:layout_marginEnd="4dp"
         android:contentDescription="@string/imageposter"
         android:src="@drawable/movie_logo"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,6 +35,7 @@
         android:text="@string/title"
         android:textSize="25sp"
         android:textStyle="bold"
+        android:textAlignment="center"
         app:layout_constraintEnd_toStartOf="@+id/itemImage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/itemBackdrop" />
@@ -91,6 +92,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/genreTv" />
 
+    <TextView
+        android:id="@+id/durationTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/duration"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/btnTrailer"
+        app:layout_constraintStart_toStartOf="@+id/btnTrailer" />
+
+    <TextView
+        android:id="@+id/tvDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/exampleGenre"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_marginStart="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnTrailer"
+        app:layout_constraintStart_toEndOf="@+id/durationTv" />
+
     <Button
         android:id="@+id/btnTrailer"
         android:layout_width="match_parent"
@@ -103,13 +125,29 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
-        android:id="@+id/circularProgressBar"
-        android:layout_width="86dp"
-        android:layout_height="83dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:layout_constraintBottom_toBottomOf="@+id/btnTrailer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/genreTv"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/itemBackdrop" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingFavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/favorite"
+        android:src="@drawable/ic_favorite_false"
+        app:backgroundTint="@color/black_200"
+        app:layout_constraintBottom_toTopOf="@+id/btnTrailer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.458"
+        app:layout_constraintStart_toStartOf="@+id/itemImage"
+        app:layout_constraintTop_toBottomOf="@+id/itemImage"
+        app:layout_constraintVertical_bias="0.945" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

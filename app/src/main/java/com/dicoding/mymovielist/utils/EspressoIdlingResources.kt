@@ -1,4 +1,4 @@
-package com.dicoding.mymovielist.data
+package com.dicoding.mymovielist.utils
 
 import androidx.test.espresso.idling.CountingIdlingResource
 

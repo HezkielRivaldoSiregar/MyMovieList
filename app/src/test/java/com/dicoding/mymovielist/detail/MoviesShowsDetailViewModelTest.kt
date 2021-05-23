@@ -5,16 +5,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.dicoding.mymovielist.data.MovieShowsRepository
 import com.dicoding.mymovielist.data.local.Movies
-import com.dicoding.mymovielist.data.local.MoviesTvShowsData
 import com.dicoding.mymovielist.data.local.TvShows
+import com.dicoding.mymovielist.utils.MoviesTvShowsData
+import com.dicoding.mymovielist.vo.Resource
+import com.nhaarman.mockitokotlin2.doNothing
+import com.nhaarman.mockitokotlin2.verify
 import org.junit.Test
-
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
@@ -23,8 +25,8 @@ class MoviesShowsDetailViewModelTest {
     private lateinit var viewModel: MoviesShowsDetailViewModel
     private val showsData = MoviesTvShowsData.generateTvShowsData()[0]
     private val moviesData = MoviesTvShowsData.generateMoviesData()[0]
-    private val movieTitle = moviesData.title
-    private val showTitle = showsData.title
+    private val idMovie = moviesData.id
+    private val idShow = showsData.id
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -33,64 +35,66 @@ class MoviesShowsDetailViewModelTest {
     private lateinit var movieShowsRepository: MovieShowsRepository
 
     @Mock
-    private lateinit var movieObserver: Observer<List<Movies>>
+    private lateinit var movieObserver: Observer<Resource<Movies>>
 
     @Mock
-    private lateinit var showObserver: Observer<List<TvShows>>
+    private lateinit var showObserver: Observer<Resource<TvShows>>
 
     @Before
     fun setUp() {
         viewModel = MoviesShowsDetailViewModel(movieShowsRepository)
-        viewModel.setSelectedMovies(movieTitle)
-        viewModel.setSelectedShows(showTitle)
+        viewModel.setSelectedMovies(idMovie)
+        viewModel.setSelectedShows(idShow)
     }
 
     @Test
     fun getMovie() {
-        val movie = MutableLiveData<List<Movies>>()
-        movie.value = listOf(moviesData)
+        val movieDetail = Resource.success(MoviesTvShowsData.generateMoviesData()[0])
+        val movie = MutableLiveData<Resource<Movies>>()
+        movie.value = movieDetail
 
-        Mockito.`when`(movieShowsRepository.getAllMovies()).thenReturn(movie)
-        val movieEntity = viewModel.getMovie().value
-        Mockito.verify(movieShowsRepository).getAllMovies()
-
-        assertNotNull(movieEntity)
-        assertEquals(moviesData.genre, movieEntity?.get(0)?.genre)
-        assertEquals(moviesData.image, movieEntity?.get(0)?.image)
-        assertEquals(moviesData.overview, movieEntity?.get(0)?.overview)
-        assertEquals(moviesData.releaseDate, movieEntity?.get(0)?.releaseDate)
-        assertEquals(moviesData.title, movieEntity?.get(0)?.title)
-
-
-        viewModel.getMovie().observeForever(movieObserver)
-        Mockito.verify(movieObserver).onChanged(listOf(moviesData))
+        `when`(movieShowsRepository.getMoviesById(idMovie)).thenReturn(movie)
+        viewModel.movie.observeForever(movieObserver)
+        verify(movieObserver).onChanged(movieDetail)
     }
 
     @Test
-    fun getTvShow() {
-        val tvShow = MutableLiveData<List<TvShows>>()
-        tvShow.value = listOf(showsData)
+    fun getTvShows() {
+        val showDetail = Resource.success(MoviesTvShowsData.generateTvShowsData()[0])
+        val tvShow = MutableLiveData<Resource<TvShows>>()
+        tvShow.value = showDetail
 
-        Mockito.`when`(movieShowsRepository.getAllShows()).thenReturn(tvShow)
-        val showEntity = viewModel.getTvshow().value
-        Mockito.verify(movieShowsRepository).getAllShows()
-
-        assertNotNull(showEntity)
-        assertEquals(showsData.creator, showEntity?.get(0)?.creator)
-        assertEquals(showsData.duration, showEntity?.get(0)?.duration)
-        assertEquals(showsData.genre, showEntity?.get(0)?.genre)
-        assertEquals(showsData.image, showEntity?.get(0)?.image)
-        assertEquals(showsData.overview, showEntity?.get(0)?.overview)
-        assertEquals(showsData.rating, showEntity?.get(0)?.rating)
-        assertEquals(showsData.releaseDate, showEntity?.get(0)?.releaseDate)
-        assertEquals(showsData.status, showEntity?.get(0)?.status)
-        assertEquals(showsData.title, showEntity?.get(0)?.title)
-        assertEquals(showsData.seasons, showEntity?.get(0)?.seasons)
-
-        viewModel.getTvshow().observeForever(showObserver)
-        Mockito.verify(showObserver).onChanged(listOf(showsData))
+        `when`(movieShowsRepository.getTvShowsById(idShow)).thenReturn(tvShow)
+        viewModel.tvShow.observeForever(showObserver)
+        verify(showObserver).onChanged(showDetail)
     }
 
+    @Test
+    fun setFavoriteMovie() {
+        val favoriteMovie = Resource.success(MoviesTvShowsData.generateMoviesData()[0])
+        val movie = MutableLiveData<Resource<Movies>>()
+        val newState = !moviesData.favorited
+        movie.value = favoriteMovie
+        `when`(movieShowsRepository.getMoviesById(idMovie)).thenReturn(movie)
 
+        doNothing().`when`(movieShowsRepository).setFavoriteMovie(moviesData, newState)
+        viewModel.movie.observeForever(movieObserver)
+        viewModel.setFavorite()
+        verify(movieShowsRepository, Mockito.times(1)).setFavoriteMovie(moviesData, newState)
+    }
+
+    @Test
+    fun setFavoriteTvShow() {
+        val favoriteShow = Resource.success(MoviesTvShowsData.generateTvShowsData()[0])
+        val tvShow = MutableLiveData<Resource<TvShows>>()
+        val newState = !showsData.favorited
+        tvShow.value = favoriteShow
+        `when`(movieShowsRepository.getTvShowsById(idShow)).thenReturn(tvShow)
+
+        doNothing().`when`(movieShowsRepository).setFavoriteTvShow(showsData, newState)
+        viewModel.tvShow.observeForever(showObserver)
+        viewModel.setFavorite()
+        verify(movieShowsRepository, Mockito.times(1)).setFavoriteTvShow(showsData, newState)
+    }
 
 }

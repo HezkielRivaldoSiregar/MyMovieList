@@ -2,10 +2,13 @@ package com.dicoding.mymovielist.data.remote
 
 import android.os.Handler
 import android.os.Looper
-import com.dicoding.mymovielist.data.EspressoIdlingResources
-import com.dicoding.mymovielist.data.JsonHelper
-import com.dicoding.mymovielist.data.remote.response.MovieResponse
-import com.dicoding.mymovielist.data.remote.response.TvResponse
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.dicoding.mymovielist.utils.EspressoIdlingResources
+import com.dicoding.mymovielist.utils.JsonHelper
+import com.dicoding.mymovielist.data.local.Movies
+import com.dicoding.mymovielist.data.local.TvShows
+import com.dicoding.mymovielist.data.remote.response.ApiResponse
 
 class RemoteDataSource private constructor(private val jsonHelper: JsonHelper) {
 
@@ -21,30 +24,27 @@ class RemoteDataSource private constructor(private val jsonHelper: JsonHelper) {
             }
     }
 
-    fun getAllMovies(callback: LoadMoviesCallback) {
+    fun getAllMovies(): LiveData<ApiResponse<List<Movies>>> {
         EspressoIdlingResources.increment()
+        val resultMovies = MutableLiveData<ApiResponse<List<Movies>>>()
         Looper.myLooper()?.let {
             Handler(it).postDelayed({
-                callback.onAllMoviesReceived(jsonHelper.loadMovies())
+                resultMovies.value = ApiResponse.success(jsonHelper.loadMovies())
                 EspressoIdlingResources.decrement()
             }, SERVICE_LATENCY_IN_MILLIS)
         }
+        return resultMovies
     }
-    fun getAllShows(callback: LoadTvShowsCallback) {
+
+    fun getAllShows() : LiveData<ApiResponse<List<TvShows>>> {
         EspressoIdlingResources.increment()
+        val resultShows = MutableLiveData<ApiResponse<List<TvShows>>>()
         Looper.myLooper()?.let {
             Handler(it).postDelayed({
-                    callback.onAllTvShowsReceived(jsonHelper.loadTvshows())
+                    resultShows.value = ApiResponse.success(jsonHelper.loadTvshows())
                     EspressoIdlingResources.decrement()
                 }, SERVICE_LATENCY_IN_MILLIS)
             }
-    }
-
-    interface LoadTvShowsCallback {
-        fun onAllTvShowsReceived(tvShowResponses: List<TvResponse>)
-    }
-
-    interface LoadMoviesCallback {
-        fun onAllMoviesReceived(movieResponses: List<MovieResponse>)
+        return resultShows
     }
 }
